@@ -11,6 +11,7 @@ $(function(){
 		check_user_name();
 	});
 
+
 	$('#pwd').blur(function() {
 		check_pwd();
 	});
@@ -121,12 +122,5 @@ $(function(){
 		}
 
 	});
-
-
-
-
-
-
-
 
 })

@@ -34,6 +34,15 @@
             left:0;
             top:168px;
         }
+        .user_error{
+            width:200px;
+            height:15px;
+            font-size:10px;
+            text-indent:10px;
+            position: absolute;
+            left:0;
+            top:100px;
+        }
     </style>
 </head>
 <body>
@@ -51,14 +60,14 @@
 					<a href="#">立即注册</a>
 				</div>
 				<div class="form_input">
-					<form action="{% url 'user:login_headle' %}" method="post">
+					<form action="{% url 'user:login' %}" method="post">
 						{% csrf_token %}
                         {% if reme_name != '' %}
                             <input type="text" name="username" class="name_input" placeholder="请输入用户名" value="{{ reme_name }}">
                         {% else %}
                             <input type="text" name="username" class="name_input" placeholder="请输入用户名">
                         {% endif %}
-                        <div class="user_error">输入错误</div>
+                        <div class="user_error">{{ error.errors }}</div>
 						<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
 						<div class="pwd_error">输入错误</div>
                         <input type="text" name="verifycode" class="verify_input" placeholder="请输入验证码"/>

@@ -1,8 +1,9 @@
 from django.db import models
 
 # Create your models here.
-class User(models.Model):
-    uname = models.CharField(max_length=10,unique=True)
-    upwd = models.CharField(max_length=20)
-    uemail = models.CharField(max_length=50,unique=True)
-    isdelete = models.BooleanField(default=False)
+from  django.contrib.auth.models import AbstractUser
+from db.base_model import BaseModel
+
+class User(AbstractUser,BaseModel):
+    class Meta:
+        db_table = 'df_user'

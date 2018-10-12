@@ -16,16 +16,19 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+
 from user import views
 
 urlpatterns = [
     url(r'^$', views.index,name='index'),
     #登录
-    url(r'^login$', views.login,name='login'),
-    url(r'^login_headle$', views.login_headle,name='login_headle'),
+    url(r'^login$', views.to_login,name='login'),
     #注册
-    url(r'^register$', views.register,name='register'),
-    url(r'^register_headle$', views.register_headle,name='register_headle'),
+    url(r'^register$', views.RegisterView.as_view(),name='register'),
+    url(r'^active/(?P<token>.*)$', views.ActiveView.as_view(),name='active'),
+    #异步检测用户名是否存在
+    url(r'^check_name$', views.check_name,name='check_name'),
+
     #验证码
     url(r'^verifycode', views.verifycode,name='verifycode'),
 ]

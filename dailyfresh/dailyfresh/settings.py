@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "user"
+    "user",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -125,3 +125,13 @@ SESSION_REDIS_DB = 0
 SESSION_REDIS_PASSWORD = ''
 SESSION_REDIS_PREFIX = 'session'
 
+AUTH_USER_MODEL= 'user.User'
+
+
+# 配置发送邮件
+# EMAIL_BACKEND = 'django.core.mail.stmp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '13523077502@163.com'
+EMAIL_HOST_PASSWORD = '123456z'
+EMAIL_FROM = '天天生鲜<13523077502@163.com>'
