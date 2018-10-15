@@ -23,12 +23,21 @@ urlpatterns = [
     url(r'^$', views.index,name='index'),
     #登录
     url(r'^login$', views.to_login,name='login'),
+    #登出
+    url(r'^logout$', views.logout_view,name='logout'),
+    #忘记密码
+    url(r'^rspon_pwd$', views.ForgetPwdView.as_view(),name='rspon_pwd'),
+    url(r'^set_new_password/(?P<token>.*)$', views.ResetPwdView.as_view(),name='new_pwd'),
     #注册
     url(r'^register$', views.RegisterView.as_view(),name='register'),
     url(r'^active/(?P<token>.*)$', views.ActiveView.as_view(),name='active'),
     #异步检测用户名是否存在
     url(r'^check_name$', views.check_name,name='check_name'),
-
     #验证码
     url(r'^verifycode', views.verifycode,name='verifycode'),
+
+    #收货地址
+    url(r'^user_center_site$', views.AddressView.as_view(),name='user_center_site'),
+    url(r'^user_center_order$', views.OrderView.as_view(),name='user_center_order'),
+    url(r'^user_center_info$', views.InfoView.as_view(),name='user_center_info'),
 ]

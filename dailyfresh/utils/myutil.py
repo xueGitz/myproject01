@@ -1,6 +1,7 @@
-import hashlib
+from django.contrib.auth.decorators import login_required
 
-def my_md5(value):
-    m = hashlib.md5()
-    m.update(value.encode('utf-8'))
-    return m.hexdigest()
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view)

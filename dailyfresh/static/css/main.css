@@ -17,17 +17,17 @@ html,body{height:100%}
 	line-height:29px;
 }
 
-.login_info{
-	display:none;
-}
+/*.login_info{*/
+	/*display:none;*/
+/*}*/
 
 .login_info em{color:#ff8800}
 
-.login_btn a,.user_link a{
+.login_btn a,.user_link a,.login_info a{
 	color:#666;
 }
 
-.login_btn a:hover,.user_link a:hover{
+.login_btn a:hover,.user_link a:hover,.login_info a:hover{
 	color:#ff8800;
 }
 
@@ -642,4 +642,63 @@ html,body{height:100%}
 
 .stress{
 	color:#ff8800;
+}
+
+/*新增注册css*/
+.reg_form li .err_2name{
+	float:left;
+	height:30px;
+	line-height:30px;
+	margin-left:70px;
+	color:#e62e2e;
+}
+.reg_veri{
+	width:80px;
+	height:38px;
+	margin-left: 5px;
+	float: left;
+}
+.err_name{
+	width: 100px;
+	height: 20px;
+	margin-left: 70px;
+	color: red;
+}
+
+
+/*新增登录CSS*/
+.verify_input{
+	width:200px;
+	height:36px;
+	border:1px solid #e0e0e0;
+	font-size:14px;
+	text-indent:10px;
+	position: absolute;
+	left:0;
+	top:130px;
+}
+.verify_img{
+	width:100px;
+	height:36px;
+	position: absolute;
+	left: 220px;
+	top:130px;
+}
+.verify_error{
+	width:200px;
+	height:15px;
+	font-size:10px;
+	text-indent:10px;
+	position: absolute;
+	left:0;
+	top:168px;
+}
+.user_error{
+	width:200px;
+	height:15px;
+	font-size:10px;
+	text-indent:10px;
+	position: absolute;
+	left:0;
+	top:100px;
 }

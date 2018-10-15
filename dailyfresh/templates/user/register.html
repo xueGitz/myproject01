@@ -1,12 +1,18 @@
+{% extends 'user/bases/login_register.html' %}
 {% load static from staticfiles %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>天天生鲜-注册</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+
+{% block title %}
+    <title>天天生鲜-注册</title>
+{% endblock %}
+
+{% block script %}
+    <style type="text/css">
+    #verifycode{
+	width:200px;height:38px;border:1px solid #e0e0e0;
+	float:left;outline:none;text-indent:10px;background-color:#f8f8f8
+    }
+    </style>
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
     <script type="text/javascript">
         $(function () {
@@ -32,33 +38,10 @@
             })
         })
     </script>
-    <style type="text/css">
-        .reg_form li .err_2name{float:left;
-            height:30px;
-            line-height:30px;
-            margin-left:70px;
-            color:#e62e2e;
-            }
-        #verifycode{
-            width:200px;height:38px;border:1px solid #e0e0e0;
-            float:left;outline:none;text-indent:10px;background-color:#f8f8f8
-        }
-        .reg_veri{
-            width:80px;
-            height:38px;
-            margin-left: 5px;
-            float: left;
-        }
-        .err_name{
-            width: 100px;
-            height: 20px;
-            margin-left: 70px;
-            color: red;
-        }
-    </style>
-</head>
-<body>
-	<div class="register_con">
+{% endblock %}
+
+{% block ptop %}
+    <div class="register_con">
 		<div class="l_con fl">
 			<a class="reg_logo"><img src="{% static 'images/logo02.png' %}"></a>
 			<div class="reg_slogan">足不出户  ·  新鲜每一天</div>
@@ -80,7 +63,7 @@
 						<span class="error_tip">提示信息</span>
                         <div class="err_name"></div>
                         <div class="err_2name">{{ error.err_2name }}</div>
-					</li>					
+					</li>
 					<li>
 						<label>密码:</label>
 						<input type="password" name="pwd" id="pwd">
@@ -111,27 +94,12 @@
 					<li class="reg_sub">
 						<input type="submit" value="注 册" name="">
 					</li>
-				</ul>				
+				</ul>
 				</form>
 			</div>
 
 		</div>
 
 	</div>
+{% endblock %}
 
-	<div class="footer no-mp">
-		<div class="foot_link">
-			<a href="#">关于我们</a>
-			<span>|</span>
-			<a href="#">联系我们</a>
-			<span>|</span>
-			<a href="#">招聘人才</a>
-			<span>|</span>
-			<a href="#">友情链接</a>		
-		</div>
-		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
-		<p>电话：010-****888    京ICP备*******8号</p>
-	</div>
-	
-</body>
-</html>
