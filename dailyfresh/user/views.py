@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from django.http import HttpResponse,JsonResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 #   序列化
 from django.core.serializers import serialize
@@ -13,36 +13,37 @@ from django.conf import settings
 from django.views.generic import View
 from utils.myutil import LoginRequiredMixin
 # python自带的加密解密包 itsdangerous
-from itsdangerous import TimedJSONWebSignatureSerializer as tjss,SignatureExpired,BadSignature
+from itsdangerous import TimedJSONWebSignatureSerializer as tjss, SignatureExpired, BadSignature
 # 使用认证系统登录
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 from user.models import *
 
 
 class RegisterView(View):
-    def get(self,request):
+    def get(self, request):
         return render(request, 'user/register.html')
-    def post(self,request):
-        #接收注册信息
+
+    def post(self, request):
+        # 接收注册信息
         user_name = request.POST.get('user_name')
         user_pwd = request.POST.get('pwd')
         user_cpwd = request.POST.get('cpwd')
         user_email = request.POST.get('email')
         user_allow = request.POST.get('allow')
-        verifycode = request.POST.get('verifycode','')
+        verifycode = request.POST.get('verifycode', '')
 
-        #判断验证码是否正确
+        # 判断验证码是否正确
         if verifycode != request.session['verifycode']:
             errors = {}
             errors['err_veri'] = '验证码错误'
             return render(request, 'user/register.html', {'error': errors})
-        #验证是否可以注册
+        # 验证是否可以注册
         user = User.objects.filter(username=user_name)
         if user:
             error = {}
             error['err_2name'] = '用户已存在'
-            return render(request,'user/register.html',{'error':error})
+            return render(request, 'user/register.html', {'error': error})
         if user_pwd == user_cpwd:
             user = User.objects.create_user(username=user_name, password=user_pwd, email=user_email)
             user.is_active = 0
@@ -50,30 +51,31 @@ class RegisterView(View):
 
             '''验证邮箱'''
             # 加密用户身份信息，生成激活token
-            tjs1 = tjss(settings.SECRET_KEY,1000)
-            info = {'confirm':user.id}
+            tjs1 = tjss(settings.SECRET_KEY, 1000)
+            info = {'confirm': user.id}
             token = tjs1.dumps(info).decode('utf-8')
-            encryption_url = 'http://192.168.12.155:8080/active/%s'%token
+            encryption_url = 'http://192.168.12.155:8080/active/%s' % token
             # 发邮件
             subject = '天天生鲜欢迎您'
             message = '点击激活'
             sender = settings.EMAIL_FROM
             receiver = [user_email]
-            html_message = '<h1>%s,欢迎您成为天天生鲜注册会员</h1>请点击下面的链接激活账户</br><a href="%s">%s</a>'%(user_name,encryption_url,encryption_url)
+            html_message = '<h1>%s,欢迎您成为天天生鲜注册会员</h1>请点击下面的链接激活账户</br><a href="%s">%s</a>' % (
+            user_name, encryption_url, encryption_url)
 
-            send_email.delay(subject,message,sender,receiver,html_message=html_message)
+            send_email.delay(subject, message, sender, receiver, html_message=html_message)
 
-            reci = '<h1>%s,恭喜您，注册成功,请查看邮箱激活成为天天生鲜会员</br>'%(user_name)
+            reci = '<h1>%s,恭喜您，注册成功,请查看邮箱激活成为天天生鲜会员</br>' % (user_name)
             return HttpResponse(reci)
         else:
             return redirect(reverse('user:register'))
 
 
 class ActiveView(View):
-    def get(self,request,token):
+    def get(self, request, token):
         """进行用户激活"""
-        #解密，获取需要激活的用户信息
-        tjs2 = tjss(settings.SECRET_KEY,1000)
+        # 解密，获取需要激活的用户信息
+        tjs2 = tjss(settings.SECRET_KEY, 1000)
 
         # 检查邮箱
         try:
@@ -88,10 +90,12 @@ class ActiveView(View):
         except SignatureExpired as e:
             return HttpResponse('此链接已过期')
         except BadSignature as e:
-            return  HttpResponse('此链接不可用')
+            return HttpResponse('此链接不可用')
+
 
 def index(request):
-    return render(request,'index.html')
+    return render(request, 'index.html')
+
 
 def check_name(request):
     hname = request.GET.get('hname')
@@ -103,17 +107,16 @@ def check_name(request):
         d['pk'] = i['pk']
         info.append(d)
     context = {
-        'ret':info,
-        'count':count
+        'ret': info,
+        'count': count
     }
     return JsonResponse(context)
 
 
-
 def to_login(request):
     if request.method == 'GET':
-        reme_name = request.COOKIES.get('reme_name','')
-        return render(request,'user/login.html',{'reme_name':reme_name})
+        reme_name = request.COOKIES.get('reme_name', '')
+        return render(request, 'user/login.html', {'reme_name': reme_name})
     else:
         user_name = request.POST.get('username')
         user_pwd = request.POST.get('pwd')
@@ -124,7 +127,7 @@ def to_login(request):
             errors['err_verify'] = '验证码错误'
             return render(request, 'user/login.html', {'errors': errors})
 
-        user = authenticate(username=user_name,password=user_pwd)
+        user = authenticate(username=user_name, password=user_pwd)
         if user is not None:
             # 用户存在并且已激活
             if user.is_active:
@@ -138,7 +141,7 @@ def to_login(request):
                     resp.set_cookie('reme_name', user_name, 3600)
                 else:
                     resp.delete_cookie('reme_name')
-                login(request,user)
+                login(request, user)
                 return resp
             # 用户存在但没有激活
             else:
@@ -150,19 +153,21 @@ def to_login(request):
             regis = 'http://192.168.12.155:8080/register'
             logi = 'http://192.168.12.155:8080/login'
             ret = '<h2>登陆时遇到错误,您可能尚未注册或者用户名密码输入错误</h2></br>' \
-            '<h3>1)<a href = %s>注册</a></h3></br><h3>2)<a href = %s>登录</a></h3></br>'%(regis,logi)
+                  '<h3>1)<a href = %s>注册</a></h3></br><h3>2)<a href = %s>登录</a></h3></br>' % (regis, logi)
             return HttpResponse(ret)
+
 
 def logout_view(request):
     logout(request)
     return redirect(reverse('user:index'))
 
+
 # 忘记密码，通过向邮箱发送邮件进行确认
 class ForgetPwdView(View):
-    def get(self,request):
-        return render(request,'user/rspon_pwd.html')
+    def get(self, request):
+        return render(request, 'user/rspon_pwd.html')
 
-    def post(self,request):
+    def post(self, request):
         yourname = request.POST.get('yourname')
         email = request.POST.get('email')
         user = User.objects.filter(username=yourname)
@@ -179,7 +184,7 @@ class ForgetPwdView(View):
             sender = settings.EMAIL_FROM
             receiver = [email]
             html_message = '<h1>%s,请确定您忘记密码</h1>点击下面的链接重置密码</br><a href="%s">%s</a>' % (
-            yourname, encryption_url, encryption_url)
+                yourname, encryption_url, encryption_url)
 
             send_email.delay(subject, message, sender, receiver, html_message=html_message)
 
@@ -188,11 +193,12 @@ class ForgetPwdView(View):
         else:
             error = {}
             error['no_name'] = '该用户名还没注册哦！'
-            return render(request,'user/rspon_pwd.html',{'error':error['no_name']})
+            return render(request, 'user/rspon_pwd.html', {'error': error['no_name']})
+
 
 # 修改密码
 class ResetPwdView(View):
-    def get(self,request,token):
+    def get(self, request, token):
         tjs2 = tjss(settings.SECRET_KEY, 1000)
 
         # 检查邮箱
@@ -207,107 +213,183 @@ class ResetPwdView(View):
         except BadSignature as e:
             return HttpResponse('此链接不可用')
 
-
-    def post(self,request,token):
+    def post(self, request, token):
         new_pwd = request.POST.get('new_pwd')
         user_id = request.session['user_id']
-        user = User.objects.get(pk = user_id)
+        user = User.objects.get(pk=user_id)
         del request.session['user_id']
         user.set_password(new_pwd)
         user.save()
         return HttpResponse('密码重置成功')
 
 
-
-
-
-
-
-
 def verifycode(request):
-    #引入绘图模块
+    # 引入绘图模块
     from PIL import Image, ImageDraw, ImageFont
-    #引入随机函数模块
+    # 引入随机函数模块
     import random
-    #定义变量，用于画面的背景色、宽、高
+    # 定义变量，用于画面的背景色、宽、高
     bgcolor = (random.randrange(20, 100), random.randrange(
         20, 100), 255)
     width = 100
     height = 25
-    #创建画面对象
+    # 创建画面对象
     im = Image.new('RGB', (width, height), bgcolor)
-    #创建画笔对象
+    # 创建画笔对象
     draw = ImageDraw.Draw(im)
-    #调用画笔的point()函数绘制噪点
+    # 调用画笔的point()函数绘制噪点
     for i in range(0, 100):
         xy = (random.randrange(0, width), random.randrange(0, height))
         fill = (random.randrange(0, 255), 255, random.randrange(0, 255))
         draw.point(xy, fill=fill)
-    #定义验证码的备选值
+    # 定义验证码的备选值
     str1 = 'ABCD123EFGHIJK456LMNOPQRS789TUVWXYZ0'
-    #随机选取4个值作为验证码
+    # 随机选取4个值作为验证码
     rand_str = ''
     for i in range(0, 4):
         rand_str += str1[random.randrange(0, len(str1))]
-    #构造字体对象
+    # 构造字体对象
     font = ImageFont.truetype('FreeMono.ttf', 23)
-    #构造字体颜色
+    # 构造字体颜色
     fontcolor = (255, random.randrange(0, 255), random.randrange(0, 255))
-    #绘制4个字
+    # 绘制4个字
     draw.text((5, 2), rand_str[0], font=font, fill=fontcolor)
     draw.text((25, 2), rand_str[1], font=font, fill=fontcolor)
     draw.text((50, 2), rand_str[2], font=font, fill=fontcolor)
     draw.text((75, 2), rand_str[3], font=font, fill=fontcolor)
-    #释放画笔
+    # 释放画笔
     del draw
-    #存入session，用于做进一步验证
+    # 存入session，用于做进一步验证
     request.session['verifycode'] = rand_str
-    #内存文件操作
+    # 内存文件操作
     from io import BytesIO
     buf = BytesIO()
-    #将图片保存在内存中，文件类型为png
+    # 将图片保存在内存中，文件类型为png
     im.save(buf, 'png')
-    #将内存中的图片数据返回给客户端，MIME类型为图片png
+    # 将内存中的图片数据返回给客户端，MIME类型为图片png
     return HttpResponse(buf.getvalue(), 'image/png')
 
-class AddressView(LoginRequiredMixin,View):
-    def get(self,request):
+
+class AddressView(LoginRequiredMixin, View):
+    def get(self, request):
         ret = request.session['_auth_user_id']
         user_addr = UserAddress.objects.filter(username_id=ret)
 
-        return render(request,'user/user_center_site.html',{'user_site':user_addr[0],'page':3})
+        return render(request, 'user/user_center_site.html', {'user_site': user_addr, 'page': 3})
 
-
-
-    def post(self,request):
+    def post(self, request):
         rname = request.POST.get('reciname')
         addrs = request.POST.get('address')
         postc = request.POST.get('postcode')
         phone = request.POST.get('phoneNum')
-        user_id = request.session['user_id']
+
+        '''MySql数据库实现'''
+        # province = request.POST.get('province')
+        # province = AreaContect.objects.get(pk = province)
+        # city = request.POST.get('city')
+        # city = AreaContect.objects.get(pk=city)
+        # area = request.POST.get('area')
+        # area = AreaContect.objects.get(pk=area)
+        # areas = [province.tittle,city.tittle,area.tittle]
+
+        '''Json前端实现'''
+        province = request.POST.get('PROVINCE_NAME')
+        city = request.POST.get('CITY_NAME')
+        area = request.POST.get('COUNTY_NAME')
+        areas = [province,city,area]
+
+        areas = '-'.join(areas)+'-'
+        print(areas)
+        user_id = request.session['_auth_user_id']
 
         user_addr = UserAddress()
         user_addr.reciname = rname
-        user_addr.address = addrs
+        user_addr.address = areas+addrs
         user_addr.postcode = postc
         user_addr.phoneNum = phone
         user_addr.username_id = user_id
         user_addr.save()
 
+        user_addr = UserAddress.objects.filter(username_id=user_id)
 
-        return render(request,'user/user_center_site.html',{'user_site':user_addr})
-
-
-
-class OrderView(LoginRequiredMixin,View):
-    def get(self,request):
-        return render(request,'user/user_center_order.html',{'page':2})
+        return render(request, 'user/user_center_site.html', {'user_site': user_addr,'page':3})
 
 
-class InfoView(LoginRequiredMixin,View):
-    def get(self,request):
-        return render(request,'user/user_center_info.html',{'page':1})
+class OrderView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'user/user_center_order.html', {'page': 2})
+
+
+class InfoView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'user/user_center_info.html', {'page': 1})
+    def post(self,request):
+        phone = request.POST.get('phone')
+        addr = request.POST.get('addr')
+        user_id = request.session['_auth_user_id']
+        user = User.objects.get(id = user_id)
+        user.myPhone = phone
+        user.myaddress = addr
+        user.save()
+        return render(request, 'user/user_center_info.html', {'page': 1})
+
+
+# 获取三级联动的省 并转成Json
+def get_provice(request):
+    prov = AreaContect.objects.all()
+    prov_list = []
+    for i in prov:
+        if not i.parent:
+            prov_list.append(i)
+    context = {
+        'prov_list':serialize('json',prov_list)
+    }
+    return JsonResponse(context)
+
+def get_area(request):
+    pid = request.GET.get('pid')
+    areas_list = AreaContect.objects.filter(parent_id=pid)
+    context = {
+        'area_list':serialize('json',areas_list)
+    }
+    return JsonResponse(context)
 
 
 
 
+# 测试django内建表单
+from django.shortcuts import render_to_response
+from user.form import RegisterForm
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.http import HttpResponseRedirect
+
+from django.contrib.auth.forms import PasswordResetForm
+
+def reset(request):
+    form = PasswordResetForm()
+    return render_to_response('user/reset1.html',{'form':form})
+
+
+def register1(request):
+    error = []
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            username = data['username']
+            email = data['email']
+            password = data['password']
+            password2 = data['password2']
+            if not User.objects.all().filter(username=username):
+                if form.pwd_validate(password, password2):
+                    user = User.objects.create_user(username, email, password)
+                    user.save()
+                    # login_validate(request, username, password)
+                    return render_to_response('user/welcom1.html', {'user': username})
+                else:
+                    error.append('Please input the same password')
+            else:
+                error.append('The username has existed,please change your username')
+    else:
+        form = RegisterForm()
+    return render_to_response('user/register1.html', {'form': form, 'error': error})

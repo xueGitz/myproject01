@@ -40,4 +40,11 @@ urlpatterns = [
     url(r'^user_center_site$', views.AddressView.as_view(),name='user_center_site'),
     url(r'^user_center_order$', views.OrderView.as_view(),name='user_center_order'),
     url(r'^user_center_info$', views.InfoView.as_view(),name='user_center_info'),
+
+    #省市区三级联动
+    url(r'^get_province$', views.get_provice,name='get_province'),
+    url(r'^get_areas$', views.get_area,name='get_area'),
+
+    url(r'^register1$',views.register1),
+    url(r'^resetpwd$',views.reset)
 ]

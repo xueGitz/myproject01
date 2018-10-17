@@ -37,8 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
 
     "user",
+    "goods",
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -95,8 +98,8 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-# LANGUAGE_CODE = 'zh-Hans'
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
+# LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -136,6 +139,15 @@ EMAIL_HOST_USER = '13523077502@163.com'
 EMAIL_HOST_PASSWORD = '123456z'
 EMAIL_FROM = '天天生鲜<13523077502@163.com>'
 
+# 存储上传文件
+MEDIA_ROOT=os.path.join(BASE_DIR,"static/media")
 
 # 验证登录装饰器默认地址
 LOGIN_URL = '/login'
+
+# 使用富文本编辑器
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 600,
+    'height': 400,
+}
