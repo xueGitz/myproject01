@@ -1,0 +1,76 @@
+{% extends 'goods/base_goods.html' %}
+{% load static from staticfiles %}
+
+{% block title %}
+    <title>天天生鲜--商品列表</title>
+{% endblock %}
+
+{% block pbody %}
+
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">{{ type.tittle }}</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+                    {% for goods in goods_list %}
+                    <li>
+						<a href="{% url 'goods:detail' goods.id %}"><img src="{{ goods.image.url }}"></a>
+						<h4><a href="{% url 'goods:detail' goods.id %}">{{ goods.tittle }}</a></h4>
+						<div class="prize">￥{{ goods.price }}</div>
+					</li>
+                    {% endfor %}
+
+                </ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="{% url 'goods:goodlist' type.id 1 %}" {% if sort != 'price' %}class="active"{% endif %}>默认</a>
+				<a href="{% url 'goods:goodlist' type.id 1 %}?sort=price" {% if sort == 'price' %}class="active"{% endif %}>价格</a>
+				<a href="{% url 'goods:goodlist' type.id 1 %}?sort=hot" {% if sort == 'hot' %}class="active"{% endif %}>人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+                {% for goodsku in mypage.object_list %}
+                <li>
+					<a href="{% url 'goods:detail' goodsku.id %}"><img src="{{ goodsku.image.url }}"></a>
+					<h4><a href="{% url 'goods:detail' goodsku.id %}">{{ goodsku.tittle }}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{ goodsku.price }}</span>
+						<span class="unit">{{ goodsku.price }}/{{ goodsku.unite }}</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+                {% endfor %}
+
+			</ul>
+
+			<div class="pagenation">
+                <a style="font-size: 20px" href="{% url 'goods:goodlist' type.id 1 %}?sort={{ sort }}" title="{{ 1 }}">首页</a>
+                {% if mypage.has_previous %}
+                    <a style="font-size: 20px" href="{% url 'goods:goodlist' type.id mypage.previous_page_number %}?sort={{ sort }}" title="{{ mypage.previous_page_number }}">上一页</a>
+                {% else %}
+                    <a style="font-size: 20px">上一页</a>
+                {% endif %}
+                    {% for i in range_page %}
+                        <a style="font-size: 20px" href="{% url 'goods:goodlist' type.id i %}?sort={{ sort }}" title="{{ i }}">{{ i }}</a>
+                    {% endfor %}
+                {% if mypage.has_next %}
+                    <a style="font-size: 20px" href="{% url 'goods:goodlist' type.id mypage.next_page_number %}?sort={{ sort }}" title="{{ mypage.next_page_number }}">下一页</a>
+                {% else %}
+                    <a style="font-size: 20px">下一页</a>
+                {% endif %}
+                    <a style="font-size: 20px" href="{% url 'goods:goodlist' type.id mypage.paginator.num_pages %}?sort={{ sort }}" title="{{ mypage.paginator.num_pages }}">尾页</a>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

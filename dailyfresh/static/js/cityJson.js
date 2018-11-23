@@ -1,0 +1,18 @@
+city = [{ "ID": 277, "NAME": "德阳市", "PARENT_ID": 24, "DEEP": 2 }, { "ID": 127, "NAME": "绍兴市", "PARENT_ID": 12, "DEEP": 2 }, { "ID": 131, "NAME": "台州市", "PARENT_ID": 12, "DEEP": 2 }, { "ID": 135, "NAME": "蚌埠市", "PARENT_ID": 13, "DEEP": 2 }, { "ID": 138, "NAME": "淮北市", "PARENT_ID": 13, "DEEP": 2 }, { "ID": 142, "NAME": "滁州市", "PARENT_ID": 13, "DEEP": 2 }, { "ID": 146, "NAME": "六安市", "PARENT_ID": 13, "DEEP": 2 }, { "ID": 150, "NAME": "福州市", "PARENT_ID": 14, "DEEP": 2 }, { "ID": 153, "NAME": "三明市", "PARENT_ID": 14, "DEEP": 2 }, { "ID": 157, "NAME": "龙岩市", "PARENT_ID": 14, "DEEP": 2 }, { "ID": 161, "NAME": "萍乡市", "PARENT_ID": 15, "DEEP": 2 }, { "ID": 164, "NAME": "鹰潭市", "PARENT_ID": 15, "DEEP": 2 }, { "ID": 168, "NAME": "抚州市", "PARENT_ID": 15, "DEEP": 2 }, { "ID": 172, "NAME": "淄博市", "PARENT_ID": 16, "DEEP": 2 }, { "ID": 176, "NAME": "潍坊市", "PARENT_ID": 16, "DEEP": 2 }, { "ID": 180, "NAME": "日照市", "PARENT_ID": 16, "DEEP": 2 }, { "ID": 183, "NAME": "德州市", "PARENT_ID": 16, "DEEP": 2 },
+    { "ID": 187, "NAME": "郑州市", "PARENT_ID": 17, "DEEP": 2 },
+    { "ID": 188, "NAME": "信阳市", "PARENT_ID": 17, "DEEP": 2 },
+    { "ID": 191, "NAME": "安阳市", "PARENT_ID": 17, "DEEP": 2 },
+    { "ID": 194, "NAME": "焦作市", "PARENT_ID": 17, "DEEP": 2 },
+    { "ID": 198, "NAME": "三门峡市", "PARENT_ID": 17, "DEEP": 2 },
+    { "ID": 202, "NAME": "周口市", "PARENT_ID": 17, "DEEP": 2 },
+    { "ID": 206, "NAME": "十堰市", "PARENT_ID": 18, "DEEP": 2 }, { "ID": 210, "NAME": "荆门市", "PARENT_ID": 18, "DEEP": 2 }, { "ID": 213, "NAME": "黄冈市", "PARENT_ID": 18, "DEEP": 2 }, { "ID": 216, "NAME": "恩施土家族苗族自治州", "PARENT_ID": 18, "DEEP": 2 },
+    { "ID": 221, "NAME": "衡阳市", "PARENT_ID": 19, "DEEP": 2 },
+    { "ID": 224, "NAME": "常德市", "PARENT_ID": 19, "DEEP": 2 },
+    { "ID": 228, "NAME": "永州市", "PARENT_ID": 19, "DEEP": 2 },
+    { "ID": 231, "NAME": "湘西土家族苗族自治州", "PARENT_ID": 19, "DEEP": 2 },
+    { "ID": 240, "NAME": "茂名市", "PARENT_ID": 20, "DEEP": 2 },
+    { "ID": 244, "NAME": "汕尾市", "PARENT_ID": 20, "DEEP": 2 },
+    { "ID": 289, "NAME": "巴中市", "PARENT_ID": 24, "DEEP": 2 },
+    { "ID": 186, "NAME": "菏泽市", "PARENT_ID": 16, "DEEP": 2 },
+
+];
